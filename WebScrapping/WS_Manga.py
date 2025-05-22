@@ -99,7 +99,7 @@ def manga(rank_manga):
     print(len(manga["Autor"]))
     print(len(manga["Lectores"]))
     df = pd.DataFrame(manga)
-    df.to_csv("../DataSets/data_manga.csv")
+    df.to_csv("../DataSet/data_manga.csv",sep=";")
     print(df.tail())
 
 
