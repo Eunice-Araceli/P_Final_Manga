@@ -1,5 +1,3 @@
-import WS_Rank
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -87,22 +85,5 @@ def manga(rank_manga):
         manga["Lectores"].append(lista_dic[9])
         lista_dic = [None, None, None, None, None, None, None, None, None, None]
         navegador.close()
-    print(len(manga["Titulo"]))
-    print(len(manga["Volumenes"]))
-    print(len(manga["Capitulos"]))
-    print(len(manga["Status"]))
-    print(len(manga["Año"]))
-    print(len(manga["Generos"]))
-    print(len(manga["Temas"]))
-    print(len(manga["Demografia"]))
-    print(len(manga["Editorial"]))
-    print(len(manga["Autor"]))
-    print(len(manga["Lectores"]))
     df = pd.DataFrame(manga)
-    df.to_csv("../DataSet/data_manga.csv",sep=";")
-    print(df.tail())
-
-
-if __name__ == "__main__":
-    rank_manga=WS_Rank.web()
-    manga(rank_manga)
+    df.to_csv("DataSet/data_manga.csv",sep=";")

@@ -1,9 +1,7 @@
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -18,7 +16,7 @@ def web():
     navegador.get("https://myanimelist.net/topmanga.php?type=manga&limit=0")
     time.sleep(10)
     rank_manga={"Rank":[],"Titulo":[],"Calificacion":[],"Link":[]}
-    for i in range(0, 6):
+    for i in range(0, 8):
         soup = BeautifulSoup(navegador.page_source, "html.parser")
         btnNext50 = navegador.find_element(By.LINK_TEXT, "Next 50")
         btnNext50.click()
@@ -43,11 +41,6 @@ def web():
             else:
                 rank_manga["Calificacion"].append(c.span.text)
     df = pd.DataFrame(rank_manga)
-    df.to_csv("../DataSet/rank_manga.csv",sep=";")
-    print(df.tail())
+    df.to_csv('DataSet/rank_manga.csv', sep=";")
     time.sleep(3)
     navegador.close()
-    return rank_manga
-
-if __name__ == "__main__":
-    web()
