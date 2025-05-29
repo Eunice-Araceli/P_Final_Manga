@@ -59,5 +59,5 @@
 #### Diseñar los dashboards (Jazmin) 🖌️📊 (Dificultad = 3)
 #### Crear los dashboards (Jazmin) 🚀🖥️ (Dificultad = 8)
 
-## ⬇️⬇️⬇️ Informacion adicional sobre el proyecto ⬇️⬇️⬇️
+##  Informacion adicional sobre el proyecto ⬇️⬇️⬇️
 #### https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0
