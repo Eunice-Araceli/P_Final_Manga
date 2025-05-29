@@ -9,7 +9,7 @@
 ## 📖🧠 Roles
 ### 👩🏻‍💼 Scrum Master:
 #### Eunice Araceli Reyes Archuleta 
-### 🖋️ Product Owner: 
+### 👩🏻‍💼 Product Owner: 
 #### Maria Guadalupe Gonzalez Gozalez
 ### 🧑‍🧑‍🧒‍🧒 Developers: 
 #### Jazmin Alejandra Soriano Garcia
