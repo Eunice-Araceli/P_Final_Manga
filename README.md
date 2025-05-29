@@ -1,4 +1,4 @@
-# 👘 👺 👹 P_Final_Manga 🐉 🧝 🥷#
+# 👘 👺 👹 P_Final_Manga 🐉 🧝 🥷
 ### 👨🏻‍💻👩🏻‍💻👩🏻‍💻👩🏻‍💻👩🏻‍💻 Integrantes
 #### Maria Guadalupe Gonzalez Gonzalez
 #### Eunice Araceli Reyes Archuleta
