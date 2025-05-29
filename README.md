@@ -1,5 +1,11 @@
 # P_Final_Manga #
 ### Integrantes
+##### Maria Guadalupe Gonzalez Gonzalez
+##### Eunice Araceli Reyes Archuleta
+##### Jazmin Alejandra Soriano Garcia
+##### Valeria Monserrat Camacho Perez 
+##### Juan Ricardo Garfias Arellanes
+
 
 
 ## Tarea de 🔍1️⃣ Extracción de Datos
