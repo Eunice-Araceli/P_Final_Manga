@@ -6,6 +6,20 @@
 #### Valeria Monserrat Camacho Perez 
 #### Juan Ricardo Garfias Arellanes
 
+## 📖🧠 Roles
+### 👩🏻‍💼 Scrum Master:
+#### Eunice Araceli Reyes Archuleta 
+### 🖋️ Product Owner: 
+#### Maria Guadalupe Gonzalez Gozalez
+### 🧑‍🧑‍🧒‍🧒 Developers: 
+#### Jazmin Alejandra Soriano Garcia
+#### Juan Ricardo Garfias Arellanes
+#### Valeria Monserrat Camacho Perez
+### Cliente: 
+#### Josue Miguel Flores Parra
+
+
+
 
 ## Introducción
 #### En este proyecto lo que realizamos es la extracción de datos de varias páginas de manga, utilizando python y varias bibliotecas entre ellas pandas, Beautiful Soap, etc. con el propósito de crear un archivo csv que contiene información de mandas, el cual aplicaremos un análisis y tratamiento de datos, ya que los datos extraídos presentan problemas con valores nulos, espacios, filas extras o errores de lectura de formato.
@@ -17,6 +31,8 @@
 #### Utilizar herramientas como BeautifulSoup,Scrapy o Selenium
 #### Verificar la calidad y confiabilidad de los datos
 #### Documentar todo el proyecto
+
+
 
 
 # 🧠 Tareas a Realizar 📚
