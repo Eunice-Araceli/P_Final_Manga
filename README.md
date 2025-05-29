@@ -1,4 +1,7 @@
 # P_Final_Manga #
+### color=blue
+
+
 ## Tarea de 🔍1️⃣ Extracción de Datos
 #### Establecer datos a recabar (Eunice) 📋🔎 (Dificultad = 3)
 #### Seleccionar páginas web (Eunice) 🌐🔍 (Dificultad = 3)
