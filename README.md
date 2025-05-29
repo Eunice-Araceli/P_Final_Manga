@@ -1,5 +1,5 @@
 # P_Final_Manga #
-### color=blue
+### Integrantes
 
 
 ## Tarea de 🔍1️⃣ Extracción de Datos
