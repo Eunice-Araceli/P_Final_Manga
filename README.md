@@ -7,6 +7,10 @@
 #### Juan Ricardo Garfias Arellanes
 
 
+## Introduccion
+#### En este proyecto lo que realizamos es la extracción de datos de varias páginas de manga, utilizando python y varias bibliotecas entre ellas pandas, Beautiful Soap, etc. con el propósito de crear un archivo csv que contiene información de mandas, el cual aplicaremos un análisis y tratamiento de datos, ya que los datos extraídos presentan problemas con valores nulos, espacios, filas extras o errores de lectura de formato.
+
+
 
 ## Tarea de 🔍1️⃣ Extracción de Datos
 #### Establecer datos a recabar (Eunice) 📋🔎 (Dificultad = 3)
