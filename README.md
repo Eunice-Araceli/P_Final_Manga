@@ -42,3 +42,6 @@
 #### Seleccionar la gama de colores a utilizar (Jazmin) 🎨🌈 (Dificultad = 8)
 #### Diseñar los dashboards (Jazmin) 🖌️📊 (Dificultad = 3)
 #### Crear los dashboards (Jazmin) 🚀🖥️ (Dificultad = 8)
+
+
+#### (https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0)
