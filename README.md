@@ -1,4 +1,5 @@
 # 👘 👺 👹 P_Final_Manga 🐉 🧝 🥷
+## https://static.wixstatic.com/media/d37dc4_5386a03afdd34069a3b43974d6b2a3ce~mv2.png/v1/fill/w_296,h_404,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/UABC_escudo_SER%20(2).png
 ### 👨🏻‍💻👩🏻‍💻👩🏻‍💻👩🏻‍💻👩🏻‍💻 Integrantes
 #### Maria Guadalupe Gonzalez Gonzalez
 #### Eunice Araceli Reyes Archuleta
