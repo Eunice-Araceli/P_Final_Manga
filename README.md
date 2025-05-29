@@ -15,19 +15,19 @@
 #### Jazmin Alejandra Soriano Garcia
 #### Juan Ricardo Garfias Arellanes
 #### Valeria Monserrat Camacho Perez
-### Cliente: 
+### 🛡️ Cliente: 
 #### Josue Miguel Flores Parra
 
 
 
 
-## Introducción
+# Introducción
 #### En este proyecto lo que realizamos es la extracción de datos de varias páginas de manga, utilizando python y varias bibliotecas entre ellas pandas, Beautiful Soap, etc. con el propósito de crear un archivo csv que contiene información de mandas, el cual aplicaremos un análisis y tratamiento de datos, ya que los datos extraídos presentan problemas con valores nulos, espacios, filas extras o errores de lectura de formato.
 
-## Objetivo General
+# Objetivo General
 #### Desarrollar un sistema que extraiga los datos de una página web, en el cual después llevará un proceso de limpiar y procesar los datos con el fin de que sea más fácil su interpretación, con la finalidad de poder analizar los datos que obtengamos para generar estadísticas y posteriormente visualizaciones.
 
-## Objetivos Específicos
+# Objetivos Específicos
 #### Utilizar herramientas como BeautifulSoup,Scrapy o Selenium
 #### Verificar la calidad y confiabilidad de los datos
 #### Documentar todo el proyecto
