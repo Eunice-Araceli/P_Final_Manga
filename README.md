@@ -59,5 +59,10 @@
 #### Diseñar los dashboards (Jazmin) 🖌️📊 (Dificultad = 3)
 #### Crear los dashboards (Jazmin) 🚀🖥️ (Dificultad = 8)
 
+
+## Paginas de las que se obtuvo informacion 🏯🎴
+#### https://www.mangazenkan.com/r/yearly/book/2024/
+#### https://www.mangazenkan.com/r/rekidai/total/?srsltid=AfmBOoo74zKqIrpmoGSOdfecYuZAZTvVMG3yoEL4uVR_YyfnT2hbbxqC
+
 ##  Informacion adicional sobre el proyecto ⬇️⬇️⬇️
 #### https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0
