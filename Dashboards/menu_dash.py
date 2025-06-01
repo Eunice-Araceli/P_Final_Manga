@@ -34,9 +34,9 @@ sidebar = html.Div(
            [
                dbc.NavLink("Home", href="/", active="exact"),
                dbc.NavLink("Ranking vs Calificación", href="/dash1", active="exact"),
-               dbc.NavLink("Dashboard 2", href="/dash2", active="exact"),
+               dbc.NavLink("Lectores por manga", href="/dash2", active="exact"),
                dbc.NavLink("Dashboard 3", href="/dash3", active="exact"),
-               dbc.NavLink("GitHub 4", href="http://github.com", active="exact", target="blank")
+
            ],
            vertical=True,
            pills=True,
