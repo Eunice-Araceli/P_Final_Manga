@@ -5,9 +5,9 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html, callback
-import dash_poblacion as pd
 import welcome_dash as wd
-import d_myanimelist as kd
+import dashboard_uno as kd
+import dashboard_dos as dd
 
 SIDEBAR_STYLE = {
    "position": "fixed",
@@ -54,9 +54,9 @@ def render_page_content(pathname):
    elif pathname == "/dash1":
        return kd.kpi()
    elif pathname == "/dash2":
-       return wd.welcome()
+       return dd.kpi_tres()
    elif pathname == "/dash3":
-       return pd.poblacion()
+       return
 
    return html.Div(
        [
