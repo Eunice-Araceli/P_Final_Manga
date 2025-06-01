@@ -1,3 +1,7 @@
+# Jazmin Alejandra Soriano Garcia
+# 952
+# 31/05/2025
+# Primer Dashboard
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html, callback
