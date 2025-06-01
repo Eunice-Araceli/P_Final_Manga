@@ -11,7 +11,7 @@ def kpi():
         html.H2("Comparación de ranking vs calificación", style={"color": "white"}),
         dbc.Card([
             dbc.CardBody([
-                dbc.Label("Filtrar por Ranking:"),# filtrar por categoría también
+                dbc.Label("Filtrar por Ranking:"),
                 dcc.Dropdown(
                     options=[{"label": f"Top {i}", "value": i} for i in range(1, 21)],
                     value=10,
