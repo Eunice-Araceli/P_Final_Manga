@@ -1,0 +1,132 @@
+
+.comic-box {
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    color: white;
+    border: 4px solid #000;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #000;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    padding: 1.5rem;
+    width: 18rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+
+
+
+.nav-comic .nav-link {
+    color: white ;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px black;
+}
+
+.nav-comic .nav-link:hover {
+    background-color: white;
+    color: #cc0000 ;
+    border-color: #000;
+}
+
+.nav-comic .nav-link.active {
+    background-color: white;
+    color: white ;
+    border: 5px dashed white;
+}
+
+
+.comic-box {
+    background: linear-gradient(135deg, #8EB9E3, #35a3ff);
+    color: white;
+    border: 4px solid #000;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #000;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding: 1.5rem;
+    width: 18rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+
+
+.nav-comic .nav-link {
+    color: white ;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px black;
+}
+
+.nav-comic .nav-link:hover {
+    background-color: white;
+    color: #232bc4 ;
+    border-color: #000;
+}
+
+.nav-comic .nav-link.active {
+    background-color: blue;
+    color: white ;
+    border: 5px dashed white;
+}
+
+.CONTENT_STYLE {
+    margin-left: 20rem; 
+    padding: 2rem 1rem;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.menu-title {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 2px blue;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.menu-lead {
+    font-size: 2.2rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px blue;
+    margin-bottom: 1.5rem;
+}
+
+
+.menu-title {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.menu-lead {
+    font-size: 2.2rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px black;
+    margin-bottom: 1.5rem;
+}
+
+
+body {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/013/388/367/non_2x/aesthetic-retro-small-blue-gingham-checkerboard-checker-plaid-checkered-wallpaper-perfect-for-postcard-wallpaper-backdrop-background-banner-for-your-design-vector.jpg");
+    background-size: cover;
+    background-position: center ;
+    margin: 20px;
+    padding: 0;
+}
