@@ -45,10 +45,7 @@ def welcome():
             html.Center(html.H2("Integrantes")),
             html.Ul([
                 html.Li("Maria Guadalupe Gonzalez Gonzalez"),
-                html.Li("Eunice Araceli Reyes Archuleta"),
-                html.Li("Jazmin Alejandra Soriano Garcia"),
-                html.Li("Valeria Monserrat Camacho Perez"),
-                html.Li("Juan Ricardo Garfias Arellanes")
+                html.Li("Eunice Araceli Reyes Archuleta")
             ]),
         ], style=cuadro_style),
 

@@ -62,7 +62,7 @@ def render_page_content(pathname):
     elif pathname == "/dash3":
         return d4.get_layout()
     elif pathname == "/dash4":
-        return dc.layout_editorial_por_demografia()
+        return dc.layout_editorial_por_rango_multiples()
     elif pathname == "/dash5":
         return dss.layout_dashboard_final()
     # If the user tries to reach a different page, return a 404 message

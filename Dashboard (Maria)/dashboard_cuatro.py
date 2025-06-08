@@ -3,121 +3,116 @@ import pandas as pd
 import plotly.express as px
 from sqlalchemy import create_engine
 
-#CONEXION EN SQL
-USER = 'root'
-PASSWORD = '123456'
-HOST = 'localhost'
-DATABASE = 'manga'
-cadena_conexion = f"mysql+mysqlconnector://{USER}:{PASSWORD}@{HOST}/{DATABASE}"
-engine = create_engine(cadena_conexion)
+#CONEXION DE SQL
+import Constantes_BD as c
+
+# CONEXION AL SQL
+cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
+engine = create_engine(cadena_con)
+
 
 #CARGA DE DATOS
 try:
-    df_generos = pd.read_sql("SELECT ID_GENERO, NOMBRE AS NOMBRE_GENERO FROM generos", con=engine)
     df_artistas = pd.read_sql("SELECT ID_ARTISTA, NOMBRE FROM artistas", con=engine)
+    df_generos = pd.read_sql("""
+            SELECT a.ID_ARTISTA, a.NOMBRE AS ARTISTA, g.NOMBRE AS GENERO
+            FROM artistas a
+            JOIN manga_artista ma ON a.ID_ARTISTA = ma.ID_ARTISTA
+            JOIN mangas m ON ma.ID_MANGA = m.ID_MANGA
+            JOIN manga_genero mg ON m.ID_MANGA = mg.ID_MANGA
+            JOIN generos g ON mg.ID_GENERO = g.ID_GENERO
+        """, con=engine)
 except Exception as e:
     print("Error:", e)
-    df_generos = pd.DataFrame(columns=["ID_GENERO", "NOMBRE_GENERO"])
     df_artistas = pd.DataFrame(columns=["ID_ARTISTA", "NOMBRE"])
+    df_generos = pd.DataFrame(columns=["ID_ARTISTA", "ARTISTA", "GENERO"])
 
 
-#DISEÑO DEL CUADRO POR ARTISTA Y GENERO
 def get_layout():
     return html.Div([
-        html.Div([
-            html.H1("RELACION DE GENERO CON ARTISTA", style={
-                "fontSize": "2.5rem", "fontWeight": "bold", "color": "#333",
-                "marginBottom": "20px", "textAlign": "center"
-            }),
-            html.P("Selecciona un género para ver los artistas relacionados",
-                   style={"textAlign": "center", "color": "#555"})
-        ], style={"marginBottom": "40px"}),
+        html.H1("Relación de Artista con Géneros", style={
+            "fontSize": "2.5rem", "fontWeight": "bold", "color": "#333",
+            "marginBottom": "20px", "textAlign": "center"
+        }),
+        html.P("Selecciona un artista para ver los géneros relacionados",
+               style={"textAlign": "center", "color": "#555"}),
 
         html.Div([
             dcc.Dropdown(
-                id="dd-genero",
-                options=[{"label": row["NOMBRE_GENERO"], "value": row["ID_GENERO"]} for _, row in df_generos.iterrows()],
-                placeholder="Selecciona un género",
-                style={
-                    "width": "300px", "margin": "0 auto", "fontSize": "1rem",
-                    "padding": "8px", "borderRadius": "6px"
-                }
+                id="dd-artista",
+                options=[{"label": row["NOMBRE"], "value": row["ID_ARTISTA"]} for _, row in df_artistas.iterrows()],
+                placeholder="Selecciona un artista",
+                style={"width": "300px", "margin": "0 auto", "fontSize": "1rem"}
             )
         ], style={"textAlign": "center", "marginBottom": "30px"}),
 
-        html.Div(id="info-genero", style={
-            "textAlign": "center", "color": "#fff", "backgroundColor": "#007bff",
+        html.Div(id="info-artista", style={
+            "textAlign": "center", "color": "#fff", "backgroundColor": "#17a2b8",
             "padding": "20px", "margin": "20px auto", "maxWidth": "600px",
             "borderRadius": "10px", "fontSize": "1.2rem", "boxShadow": "0 4px 8px rgba(0,0,0,0.1)"
         }),
 
         html.Div([
             html.Div([
-                dcc.Graph(id="grafica-genero", style={"height": "500px"})
-            ], style={
-                "flex": "1", "backgroundColor": "#fff", "padding": "20px", "borderRadius": "10px",
-                "boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "margin": "10px"
-            }),
+                dcc.Graph(id="grafica-artista", style={"height": "500px"})
+            ], style={"flex": "1", "backgroundColor": "#fff", "padding": "20px", "borderRadius": "10px",
+                      "boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "margin": "10px"}),
 
             html.Div([
-                html.H4("artistas relacionados", style={"color": "#007bff", "marginBottom": "20px"}),
+                html.H4("Géneros relacionados", style={"color": "#17a2b8", "marginBottom": "20px"}),
                 dash_table.DataTable(
-                    id="tabla-artistas",
+                    id="tabla-generos",
                     columns=[
                         {"name": "ID_ARTISTA", "id": "ID_ARTISTA"},
-                        {"name": "NOMBRE", "id": "NOMBRE"}
+                        {"name": "GENERO", "id": "GENERO"}
                     ],
                     style_table={"overflowX": "auto", "height": "400px"},
-                    style_cell={
-                        "textAlign": "left", "padding": "10px",
-                        "fontFamily": "Arial, sans-serif"
-                    },
-                    style_header={
-                        "backgroundColor": "#007bff", "color": "white",
-                        "fontWeight": "bold", "textAlign": "center"
-                    },
+                    style_cell={"textAlign": "left", "padding": "10px", "fontFamily": "Arial, sans-serif"},
+                    style_header={"backgroundColor": "#17a2b8", "color": "white",
+                                  "fontWeight": "bold", "textAlign": "center"},
                     style_data={"backgroundColor": "#f9f9f9", "color": "#333"},
                     page_size=10
                 )
-            ], style={
-                "flex": "1", "backgroundColor": "#fff", "padding": "20px", "borderRadius": "10px",
-                "boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "margin": "10px"
-            }),
-        ], style={
-            "display": "flex", "flexWrap": "wrap", "justifyContent": "center",
-            "maxWidth": "1200px", "margin": "0 auto"
-        })
+            ], style={"flex": "1", "backgroundColor": "#fff", "padding": "20px", "borderRadius": "10px",
+                      "boxShadow": "0 4px 8px rgba(0,0,0,0.1)", "margin": "10px"}),
+        ], style={"display": "flex", "flexWrap": "wrap", "justifyContent": "center",
+                  "maxWidth": "1200px", "margin": "0 auto"})
     ], style={"backgroundColor": "#f0f2f5", "padding": "40px"})
 
-
+# Callback
 @callback(
-    Output("info-genero", "children"),
-    Output("grafica-genero", "figure"),
-    Output("tabla-artistas", "data"),
-    Input("dd-genero", "value")
+    Output("info-artista", "children"),
+    Output("grafica-artista", "figure"),
+    Output("tabla-generos", "data"),
+    Input("dd-artista", "value")
 )
-def actualizar_genero(id_genero):
-    if id_genero is None or df_generos.empty:
-        fig = px.pie(title="Selecciona un género", template="plotly_white")
-        return "Selecciona un género para ver la información.", fig, []
+def actualizar_artista(id_artista):
+    if id_artista is None or df_generos.empty:
+        fig = px.pie(title="Selecciona un artista", template="plotly_white")
+        return "Selecciona un artista para ver la información.", fig, []
 
-    nombre_genero = df_generos.loc[df_generos["ID_GENERO"] == id_genero, "NOMBRE_GENERO"].values[0]
-    total_generos = len(df_generos)
-    df_filtrado = df_artistas[df_artistas["ID_ARTISTA"] % total_generos == id_genero % total_generos]
+    artista_info = df_artistas[df_artistas["ID_ARTISTA"] == id_artista]
+    nombre_artista = artista_info.iloc[0]["NOMBRE"]
+
+    df_filtrado = df_generos[df_generos["ID_ARTISTA"] == id_artista]
 
     if df_filtrado.empty:
-        fig = px.pie(title="No hay artistas para este género", template="plotly_white")
-        return f"Género seleccionado: {nombre_genero} | No hay artistas relacionados.", fig, []
+        fig = px.pie(title="No hay géneros para este artista", template="plotly_white")
+        return f"Artista seleccionado: {nombre_artista} | No hay géneros relacionados.", fig, []
+
+    conteo_generos = df_filtrado["GENERO"].value_counts().reset_index()
+    conteo_generos.columns = ["GENERO", "TOTAL"]
 
     fig = px.pie(
-        names=df_filtrado["NOMBRE"],
-        values=[1] * len(df_filtrado),
-        title=f"Distribucion de artistas: {nombre_genero}",
+        conteo_generos,
+        names="GENERO",
+        values="TOTAL",
+        title=f"Géneros relacionados con {nombre_artista}",
         template="plotly_white"
     )
 
     return (
-        f"Género seleccionado: {nombre_genero} | Total de artistas: {len(df_filtrado)}",
+        f"Artista seleccionado: {nombre_artista} | Total de géneros: {len(df_filtrado)}",
         fig,
-        df_filtrado.to_dict("records")
+        df_filtrado[["ID_ARTISTA", "GENERO"]].to_dict("records")
     )

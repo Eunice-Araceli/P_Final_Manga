@@ -6,7 +6,12 @@ import plotly.graph_objects as go
 from sqlalchemy import create_engine
 
 #CONEXION DE SQL
-engine = create_engine("mysql+mysqlconnector://root:123456@localhost/manga")
+import Constantes_BD as c
+
+# CONEXION AL SQL
+cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
+engine = create_engine(cadena_con)
+
 
 #CONSULTAS
 df_manga = pd.read_sql("SELECT ID_MANGA FROM mangas", con=engine)
@@ -30,28 +35,6 @@ df_demografias = pd.read_sql("""
     GROUP BY d.NOMBRE
 """, con=engine)
 
-#GRAFICO RADAR
-def radar_demografias(df):
-    fig = go.Figure()
-
-    fig.add_trace(go.Scatterpolar(
-        r=df["TOTAL"],
-        theta=df["DEMOGRAFIA"],
-        fill='toself',
-        name="Popularidad"
-    ))
-
-    fig.update_layout(
-        polar=dict(
-            radialaxis=dict(visible=True, range=[0, df["TOTAL"].max()])
-        ),
-        title="Popularidad de demografias Japonesas",
-        showlegend=False,
-        template="plotly_dark"
-    )
-    return fig
-
-# Estilo para círculos informativos
 def circular_card(title, value, color):
     return html.Div([
         html.H6(title, className="fw-bold mb-2"),
@@ -82,36 +65,46 @@ def layout_dashboard_japon():
             dbc.Col(circular_card("🎨 Temas", f"{df_tema.shape[0]:,}", "#ffc107"), md=4)
         ], className="mb-5"),
 
+        # Gráfico de barras vertical para demografías
         dbc.Row([
             dbc.Col(dcc.Graph(
                 id="grafico-demografias",
-                figure=radar_demografias(df_demografias)
+                figure=px.bar(
+                    df_demografias.sort_values("TOTAL", ascending=False),
+                    x="DEMOGRAFIA",
+                    y="TOTAL",
+                    title="Popularidad de Demografías Japonesas",
+                    template="plotly_dark",
+                    color="TOTAL",
+                    color_continuous_scale="Blues"
+                )
             ), md=12)
         ], className="mb-5"),
 
         dbc.Row([
+            # Top géneros más populares con colores en azul
             dbc.Col(dcc.Graph(
                 figure=px.bar(
                     df_genero.sort_values("TOTAL", ascending=True).tail(15),
                     x="TOTAL",
                     y="GENERO",
                     orientation="h",
-                    title="Top Generos mas Populares",
+                    title="Top Géneros más Populares",
                     template="plotly_white",
                     color="TOTAL",
-                    color_continuous_scale="Tealgrn"
+                    color_continuous_scale="Blues"
                 )
             ), md=6),
 
+            # Gráfico de pastel para temas principales
             dbc.Col(dcc.Graph(
-                figure=px.bar_polar(
-                    df_tema.sort_values("TOTAL", ascending=False).head(15),
-                    r="TOTAL",
-                    theta="TEMA",
-                    color="TOTAL",
+                figure=px.pie(
+                    df_tema.sort_values("TOTAL", ascending=False).head(10),
+                    values="TOTAL",
+                    names="TEMA",
                     title="Temas Principales",
-                    color_continuous_scale="Purples",
-                    template="plotly_dark"
+                    template="plotly_dark",
+                    hole=0.3
                 )
             ), md=6)
         ])
