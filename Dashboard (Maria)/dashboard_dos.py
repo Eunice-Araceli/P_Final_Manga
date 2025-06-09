@@ -55,57 +55,68 @@ def circle_card(title, value, color):
 
 # LAYOUT
 def get_dashboard():
-    return dbc.Container([
-        html.H2("📊 Estadísticas del contenido manga", className="text-center text-primary fw-bold mb-4"),
+    # Gráfico de barras (género)
+    fig_genero = px.bar(
+        df_genero.sort_values("TOTAL", ascending=True).tail(15),
+        x="TOTAL",
+        y="GENERO",
+        orientation="h",
+        title="Frecuencia por género",
+        template="plotly_white",
+        color="TOTAL",
+        color_continuous_scale="Blues"
+    )
+    fig_genero.update_layout(paper_bgcolor="#e6ffc9", plot_bgcolor="#e6ffc9")
 
-        # KPIs CÍRCULOS
+    # Gráfico de pastel (temas)
+    pastel_colors = px.colors.sequential.Blues + px.colors.sequential.Purples
+    fig_tema = px.pie(
+        df_tema.sort_values("TOTAL", ascending=False).head(10),
+        names="TEMA",
+        values="TOTAL",
+        title="Distribución de temas",
+        hole=0.3,
+        template="plotly_white",
+        color_discrete_sequence=pastel_colors
+    )
+    fig_tema.update_layout(paper_bgcolor="#fbfcc9", plot_bgcolor="#fbfcc9")
+
+    # Gráfico de dispersión (volúmenes vs lectores)
+    fig_dispersion = px.scatter(
+        df_manga,
+        x="VOLUMENES",
+        y="LECTORES",
+        title="Impacto de los volúmenes sobre la popularidad",
+        labels={"VOLUMENES": "Volúmenes", "LECTORES": "Lectores"},
+        template="plotly_white"
+    )
+    fig_dispersion.update_layout(paper_bgcolor="#ffddaf", plot_bgcolor="#ffddaf")
+
+    return dbc.Container([
+        html.H2("📊 Estadísticas del contenido manga", className="text-center text-white fw-bold mb-4"),
+
         dbc.Row([
-            dbc.Col(circle_card("📘 Publicados", f"{mangas_publicados}", "#17a2b8"), md=4),
-            dbc.Col(circle_card("✅ Finalizados", f"{mangas_finalizados}", "#28a745"), md=4),
-            dbc.Col(circle_card("📅 En emisión", f"{mangas_en_emision}", "#ffc107"), md=4),
+            dbc.Col(circle_card("📘 Publicados", f"{mangas_publicados}", "#007bff"), md=4),
+            dbc.Col(circle_card("✅ Finalizados", f"{mangas_finalizados}", "#17a2b8"), md=4),
+            dbc.Col(circle_card("📅 En emisión", f"{mangas_en_emision}", "#6f42c1"), md=4),
         ], className="mb-5"),
 
-        # GRAFICOS VISUALES
         dbc.Row([
             dbc.Col([
-                html.H5("🎭 Top géneros más frecuentes", className="fw-bold mb-2"),
-                dcc.Graph(figure=px.bar(
-                    df_genero.sort_values("TOTAL", ascending=True).tail(15),
-                    x="TOTAL",
-                    y="GENERO",
-                    orientation="h",
-                    title="Frecuencia por género",
-                    template="plotly_white",
-                    color="TOTAL",
-                    color_continuous_scale="Blues"
-                ))
+                html.H5("🎭 Top géneros más frecuentes", className="fw-bold mb-2 text-white"),
+                dcc.Graph(figure=fig_genero)
             ], md=6),
 
             dbc.Col([
-                html.H5("🎨 Temas más comunes en manga", className="fw-bold mb-2"),
-                dcc.Graph(figure=px.pie(
-                    df_tema.sort_values("TOTAL", ascending=False).head(10),
-                    names="TEMA",
-                    values="TOTAL",
-                    title="Distribución de temas",
-                    hole=0.3,
-                    template="plotly_dark"
-                ))
+                html.H5("🎨 Temas más comunes en manga", className="fw-bold mb-2 text-white"),
+                dcc.Graph(figure=fig_tema)
             ], md=6)
         ], className="mb-4"),
 
-        # GRÁFICO DE DISPERSIÓN
         dbc.Row([
             dbc.Col([
-                html.H5("📈 Relación entre volumenes y lectores", className="fw-bold mb-2 text-dark"),
-                dcc.Graph(figure=px.scatter(
-                    df_manga,
-                    x="VOLUMENES",
-                    y="LECTORES",
-                    title="Impacto de los volumenes sobre la popularidad",
-                    labels={"VOLUMENES": "Volúmenes", "LECTORES": "Lectores"},
-                    template="plotly_dark"
-                ))
+                html.H5("📈 Relación entre volúmenes y lectores", className="fw-bold mb-2 text-white"),
+                dcc.Graph(figure=fig_dispersion)
             ])
         ])
-    ], fluid=True, className="p-4 bg-light")
+    ], fluid=True, className="p-4 bg-info")

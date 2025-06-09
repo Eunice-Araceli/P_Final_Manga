@@ -34,11 +34,11 @@ def layout_editorial_por_rango_multiples():
     return dbc.Container([
         html.H1("Editoriales por Rango de Manga", className="text-center text-white bg-primary p-3 mb-4 rounded"),
         html.P("Explora qué editoriales tienen mejor desempeño en rankings de mangas, separadas por rango.",
-               className="lead text-center mb-4"),
+               className="lead text-center mb-4 text-white"),
 
         dbc.Row([
             dbc.Col([
-                html.Label("Selecciona una demografía:", className="fw-bold"),
+                html.Label("Selecciona una demografía:", className="fw-bold text-white"),
                 dcc.Dropdown(
                     options=[{"label": d, "value": d} for d in demografias],
                     id="filtro_demografia_rango_multiple",
@@ -49,16 +49,27 @@ def layout_editorial_por_rango_multiples():
         ], justify="center", className="mb-4"),
 
         dbc.Row([
-            dbc.Col(dcc.Graph(id="grafica_rango_1_5"), width=12),
-            dbc.Col(dcc.Graph(id="grafica_rango_6_10"), width=12),
-            dbc.Col(dcc.Graph(id="grafica_rango_11_mas"), width=12)
+            dbc.Col(dbc.Card([
+                dbc.CardHeader("Top Editoriales - Rango 1–5", className="bg-primary text-white"),
+                dbc.CardBody(dcc.Graph(id="grafica_rango_1_5"))
+            ], className="mb-4 shadow"), width=12),
+
+            dbc.Col(dbc.Card([
+                dbc.CardHeader("Top Editoriales - Rango 6–10", className="bg-info text-white"),
+                dbc.CardBody(dcc.Graph(id="grafica_rango_6_10"))
+            ], className="mb-4 shadow"), width=12),
+
+            dbc.Col(dbc.Card([
+                dbc.CardHeader("Top Editoriales - Rango 11+", className="bg-secondary text-white"),
+                dbc.CardBody(dcc.Graph(id="grafica_rango_11_mas"))
+            ], className="mb-4 shadow"), width=12)
         ]),
 
         html.Footer([
             html.Hr(),
-            html.P("© 2025 Dashboard Manga • Todos los derechos reservados", className="text-center text-muted")
+            html.P("© 2025 Dashboard Manga • Todos los derechos reservados", className="text-center text-light")
         ])
-    ], fluid=True, className="bg-light p-4")
+    ], fluid=True, style={"backgroundColor": "#001f3f", "padding": "40px"})
 
 # CALLBACK
 @callback(
@@ -74,13 +85,16 @@ def actualizar_graficas_por_rango(demografia):
     df_6_10 = df_demo[df_demo["RANGO"] == "6-10"]
     df_11_plus = df_demo[df_demo["RANGO"] == "11+"]
 
-    fig1 = px.bar(df_1_5, x="EDITORIAL", y="TOTAL", title="Rango 1–5", template="plotly_white", color="TOTAL")
+    fig1 = px.bar(df_1_5, x="EDITORIAL", y="TOTAL", title="Rango 1–5", template="plotly_white", color="TOTAL",
+                  color_continuous_scale="Blues")
     fig1.update_layout(xaxis_tickangle=-45)
 
-    fig2 = px.bar(df_6_10, x="EDITORIAL", y="TOTAL", title="Rango 6–10", template="plotly_white", color="TOTAL")
+    fig2 = px.bar(df_6_10, x="EDITORIAL", y="TOTAL", title="Rango 6–10", template="plotly_white", color="TOTAL",
+                  color_continuous_scale="Blues")
     fig2.update_layout(xaxis_tickangle=-45)
 
-    fig3 = px.bar(df_11_plus, x="EDITORIAL", y="TOTAL", title="Rango 11 o más", template="plotly_white", color="TOTAL")
+    fig3 = px.bar(df_11_plus, x="EDITORIAL", y="TOTAL", title="Rango 11 o más", template="plotly_white", color="TOTAL",
+                  color_continuous_scale="Blues")
     fig3.update_layout(xaxis_tickangle=-45)
 
     return fig1, fig2, fig3
