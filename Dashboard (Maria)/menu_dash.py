@@ -8,6 +8,7 @@ import dashboard_uno as du
 import dashboard_cuatro as d4
 import dashboard_cinco as dc
 import dashboard_seis as dss
+import Constantes_BD as c
 
 #app es para darle un estilo a la pagina
 #BOOTSTRAP es para cambiar el tema de la pagina

@@ -16,7 +16,7 @@ def sacar_varios_datos(lista):
     return lf
 
 def manga(rank_manga):
-    manga = {"Titulo": [], "Volumenes": [], "Capitulos": [], "Status": [], "Año": [], "Generos": [],"Temas":[],
+    manga = {"Volumenes": [], "Capitulos": [], "Status": [], "Año": [], "Generos": [],"Temas":[],
              "Demografia": [], "Editorial": [], "Autor": [], "Lectores": []}
     for ra in (rank_manga["Link"]):
         driver = ChromeDriverManager().install()
@@ -27,11 +27,6 @@ def manga(rank_manga):
         navegador.get(ra)
         time.sleep(5)
         soup = BeautifulSoup(navegador.page_source, "html.parser")
-        titulo = soup.find("span", attrs={"itemprop":"name"})
-        if titulo == None:
-            manga["Titulo"].append(None)
-        else:
-            manga["Titulo"].append(titulo.text)
         info = soup.find_all("div", attrs={"class": "spaceit_pad"})
         time.sleep(10)
         lista_dic = [None, None, None, None, None, None, None, None, None, None]
