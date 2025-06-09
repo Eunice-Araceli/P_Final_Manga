@@ -2,25 +2,23 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 from sqlalchemy import create_engine
-
-#CONEXION DE SQL
 import Constantes_BD as c
 
-# CONEXION AL SQL
+# Conexión al SQL
 cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
 engine = create_engine(cadena_con)
 
-
-#CONSULTAS
+# Consultas
 df_manga = pd.read_sql("SELECT ID_MANGA FROM mangas", con=engine)
+
 df_genero = pd.read_sql("""
     SELECT g.NOMBRE AS GENERO, COUNT(*) AS TOTAL
     FROM manga_genero mg
     JOIN generos g ON mg.ID_GENERO = g.ID_GENERO
     GROUP BY g.NOMBRE
 """, con=engine)
+
 df_tema = pd.read_sql("""
     SELECT t.NOMBRE AS TEMA, COUNT(*) AS TOTAL
     FROM manga_tema mt
@@ -35,6 +33,7 @@ df_demografias = pd.read_sql("""
     GROUP BY d.NOMBRE
 """, con=engine)
 
+# Tarjetas circulares
 def circular_card(title, value, color):
     return html.Div([
         html.H6(title, className="fw-bold mb-2"),
@@ -53,38 +52,10 @@ def circular_card(title, value, color):
         "boxShadow": "0 0 10px rgba(0,0,0,0.4)",
         "margin": "0 auto"
     })
-
-# Layout principal
-def circular_card(title, value, color):
-    return html.Div([
-        html.H6(title, className="fw-bold mb-2"),
-        html.H3(value, className="fw-bold")
-    ], style={
-        "background": color,
-        "color": "white",
-        "borderRadius": "50%",
-        "width": "160px",
-        "height": "160px",
-        "display": "flex",
-        "flexDirection": "column",
-        "alignItems": "center",
-        "justifyContent": "center",
-        "textAlign": "center",
-        "boxShadow": "0 0 10px rgba(0,0,0,0.4)",
-        "margin": "0 auto"
-    })
-
-# Función para aplicar fondo blanco manual en cada gráfico
-def set_white_background(fig):
-    fig.update_layout(
-        paper_bgcolor='#cce8ff',
-        plot_bgcolor='white'
-    )
-    return fig
 
 # Layout principal
 def layout_dashboard_japon():
-    # Gráfico de barras: demografías
+    # ✅ Gráfico de demografías con fondo blanco
     fig_demografias = px.bar(
         df_demografias.sort_values("TOTAL", ascending=False),
         x="DEMOGRAFIA",
@@ -92,42 +63,57 @@ def layout_dashboard_japon():
         title="Popularidad de Demografías Japonesas",
         template="plotly_white",
         color="TOTAL",
-        color_continuous_scale="Blues"
+        color_continuous_scale="ice"
     )
-    set_white_background(fig_demografias)
+    fig_demografias.update_layout(
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font=dict(color="black"),
+        xaxis=dict(color="black"),
+        yaxis=dict(color="black")
+    )
 
-    # Gráfico de barras horizontales: géneros
+    # ✅ Gráfico de géneros con tema oscuro y escala azul-gris suave
     fig_genero = px.bar(
         df_genero.sort_values("TOTAL", ascending=True).tail(15),
         x="TOTAL",
         y="GENERO",
         orientation="h",
         title="Top Géneros más Populares",
-        template="plotly_white",
+        template="plotly_dark",
         color="TOTAL",
-        color_continuous_scale="Blues"
+        color_continuous_scale="ice"  # Azul-gris suave
     )
-    set_white_background(fig_genero)
+    fig_genero.update_layout(
+        paper_bgcolor="#121212",
+        plot_bgcolor="#1e1e1e",
+        font=dict(color="white"),
+        xaxis=dict(color="white"),
+        yaxis=dict(color="white")
+    )
 
-    # Gráfico de pastel: temas
+    # ✅ Gráfico de temas en oscuro con azul-gris
     fig_tema = px.pie(
         df_tema.sort_values("TOTAL", ascending=False).head(10),
         values="TOTAL",
         names="TEMA",
         title="Temas Principales",
-        template="plotly_white",
+        template="plotly_dark",
         hole=0.3,
-        color_discrete_sequence=px.colors.sequential.Blues
+        color_discrete_sequence=px.colors.sequential.ice
     )
-    set_white_background(fig_tema)
+    fig_tema.update_layout(
+        paper_bgcolor="#121212",
+        font=dict(color="white")
+    )
 
     return dbc.Container([
-        html.H3("Dashboard global de manga", className="text-center fw-bold mb-4 text-white"),
+        html.H3("📊 Dashboard Global de Manga", className="text-center fw-bold mb-4 text-white"),
 
         dbc.Row([
-            dbc.Col(circular_card("📚 Mangas", f"{len(df_manga):,}", "#17a2b8"), md=4),
-            dbc.Col(circular_card("🎭 Géneros", f"{df_genero.shape[0]:,}", "#007bff"), md=4),
-            dbc.Col(circular_card("🎨 Temas", f"{df_tema.shape[0]:,}", "#0056b3"), md=4)
+            dbc.Col(circular_card("📚 Mangas", f"{len(df_manga):,}", "#3399cc"), md=4),
+            dbc.Col(circular_card("🎭 Géneros", f"{df_genero.shape[0]:,}", "#5dade2"), md=4),
+            dbc.Col(circular_card("🎨 Temas", f"{df_tema.shape[0]:,}", "#2874a6"), md=4)
         ], className="mb-5"),
 
         dbc.Row([
@@ -138,4 +124,4 @@ def layout_dashboard_japon():
             dbc.Col(dcc.Graph(figure=fig_genero), md=6),
             dbc.Col(dcc.Graph(figure=fig_tema), md=6)
         ])
-    ], fluid=True, className="p-4 bg-dark text-white")
+    ], fluid=True, className="p-4", style={"backgroundColor": "#1c1c1c"})

@@ -33,7 +33,6 @@ sidebar = html.Div(
                 dbc.NavLink("📝 Dashboard 2", href="/dash2", active="exact"),
                 dbc.NavLink("📈 Dashboard 3", href="/dash3", active="exact"),
                 dbc.NavLink("👩🏻‍💻 Dashboard 4", href="/dash4", active="exact"),
-                dbc.NavLink("🖥️ Dashboard 5", href="/dash5", active="exact"),
                 dbc.NavLink("👨🏻‍💻 Documento final", href="https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0", active="exact", target="_blank"),
                 dbc.NavLink("💻 GitHub", href="https://github.com/", active="exact", target="_blank"),
             ],
@@ -64,8 +63,7 @@ def render_page_content(pathname):
         return d4.get_layout()
     elif pathname == "/dash4":
         return dc.layout_editorial_por_rango_multiples()
-    elif pathname == "/dash5":
-        return dss.layout_dashboard_final()
+
     # If the user tries to reach a different page, return a 404 message
     return html.Div(
         [

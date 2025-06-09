@@ -4,7 +4,7 @@ import plotly.express as px
 from sqlalchemy import create_engine
 import Constantes_BD as c
 
-# CONEXIÓN A LA BD
+# CONEXIÓN A BD
 cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
 engine = create_engine(cadena_con)
 
@@ -20,37 +20,48 @@ try:
         JOIN generos g ON mg.ID_GENERO = g.ID_GENERO
     """, con=engine)
 
-    df_evolucion = pd.read_sql("""
-        SELECT YEAR(ESTRENO) AS ANIO, COUNT(*) AS TOTAL
-        FROM mangas
-        WHERE ESTRENO IS NOT NULL
-        GROUP BY ANIO
-        ORDER BY ANIO;
+    df_estreno = pd.read_sql("""
+        SELECT A.NOMBRE AS NOMBRE_ARTISTA, YEAR(M.ESTRENO) AS ESTRENO
+        FROM MANGA_ARTISTA MA 
+        JOIN MANGAS M ON M.ID_MANGA = MA.ID_MANGA
+        JOIN ARTISTAS A ON MA.ID_ARTISTA = A.ID_ARTISTA
+        WHERE M.ESTRENO IS NOT NULL;
     """, con=engine)
 
-    df_top = pd.read_sql("""
-        SELECT r.TITULO, m.LECTORES, r.RANK
-        FROM mangas m
-        JOIN ranks r ON m.ID_MANGA = r.ID_MANGA
-        WHERE m.LECTORES IS NOT NULL AND r.RANK IS NOT NULL
-        ORDER BY m.LECTORES DESC
-        LIMIT 1;
-    """, con=engine)
+    df_estreno_agg = df_estreno.groupby(["NOMBRE_ARTISTA", "ESTRENO"]).size().reset_index(name="TOTAL")
+    lista_anios = sorted(df_estreno_agg["ESTRENO"].unique())
 
-    top_manga = df_top.iloc[0]["TITULO"]
-    top_lectores = int(df_top.iloc[0]["LECTORES"])
-    top_rank = int(df_top.iloc[0]["RANK"])
+    df_mejor_rank = pd.read_sql("""
+        SELECT A.NOMBRE AS NOMBRE_ARTISTA, MIN(R.RANK) AS MEJOR_RANK
+        FROM MANGA_ARTISTA MA 
+        JOIN MANGAS M ON M.ID_MANGA = MA.ID_MANGA
+        JOIN ARTISTAS A ON MA.ID_ARTISTA = A.ID_ARTISTA
+        JOIN RANKS R ON M.ID_MANGA = R.ID_MANGA
+        GROUP BY A.NOMBRE
+    """, con=engine)
 
 except Exception as e:
     print("Error:", e)
     df_artistas = pd.DataFrame(columns=["ID_ARTISTA", "NOMBRE"])
     df_generos = pd.DataFrame(columns=["ID_ARTISTA", "ARTISTA", "GENERO"])
-    df_evolucion = pd.DataFrame(columns=["ANIO", "TOTAL"])
-    top_manga = ""
-    top_lectores = 0
-    top_rank = 0
+    df_estreno_agg = pd.DataFrame(columns=["NOMBRE_ARTISTA", "ESTRENO", "TOTAL"])
+    lista_anios = []
+    df_mejor_rank = pd.DataFrame(columns=["NOMBRE_ARTISTA", "MEJOR_RANK"])
+
+# LAYOUT
 
 def get_layout():
+    fig_mejor_rank = px.bar(
+        df_mejor_rank.sort_values("MEJOR_RANK"),
+        x="MEJOR_RANK",
+        y="NOMBRE_ARTISTA",
+        orientation="h",
+        title="\U0001f3c6 Mejor posición en el ranking por artista",
+        template="plotly_white",
+        color="MEJOR_RANK",
+        color_continuous_scale="Blues"
+    )
+
     return html.Div([
         html.H1("Relación de Artista con Géneros", style={"textAlign": "center", "color": "#333", "marginBottom": "20px"}),
 
@@ -71,33 +82,25 @@ def get_layout():
 
         dcc.Graph(id="grafica-artista"),
 
-        html.H2("\ud83d\udcca Evolución de mangas publicados", className="text-center text-primary mt-5 mb-3"),
-        dcc.Graph(
-            figure=px.line(
-                df_evolucion,
-                x="ANIO",
-                y="TOTAL",
-                markers=True,
-                title="\ud83d\udcca Evolución anual de mangas",
-                labels={"ANIO": "Año", "TOTAL": "Cantidad"},
-                template="plotly_white"
-            ).update_traces(line=dict(color="#0077b6"))
-        ),
+        html.H2("📈 Mangas por Artista y Año de Estreno", className="text-center text-primary mt-5 mb-3"),
 
-        html.H2("\ud83c\udfc6 Manga más leído", className="text-center text-info mt-5"),
         html.Div([
-            html.H3(top_manga, style={"color": "#fff", "marginBottom": "10px"}),
-            html.P(f"\ud83d\udc41\ufe0f Lectores: {top_lectores:,}", style={"color": "#fff"}),
-            html.P(f"\u2b50 Rank: {top_rank}", style={"color": "#fff"})
-        ], style={
-            "backgroundColor": "#6a0572", "padding": "20px", "borderRadius": "10px",
-            "boxShadow": "0 4px 12px rgba(0,0,0,0.3)", "textAlign": "center",
-            "maxWidth": "400px", "margin": "auto"
-        })
+            dcc.Dropdown(
+                id="dropdown-anio",
+                options=[{"label": str(a), "value": a} for a in lista_anios],
+                placeholder="Selecciona un año para filtrar (opcional)",
+                style={"width": "300px", "margin": "0 auto", "marginBottom": "20px"}
+            )
+        ], style={"textAlign": "center"}),
+
+        dcc.Graph(id="grafico-anio-artista"),
+
+        html.H2("\U0001f4ca Mejor Ranking por Artista", className="text-center text-primary mt-5 mb-3"),
+        dcc.Graph(figure=fig_mejor_rank)
 
     ], style={"backgroundColor": "#eaf6ff", "padding": "40px"})
 
-# Callback
+# CALLBACKS
 @callback(
     Output("info-artista", "children"),
     Output("grafica-artista", "figure"),
@@ -129,3 +132,33 @@ def actualizar_artista(id_artista):
     )
 
     return f"Artista seleccionado: {nombre_artista} | Total de géneros: {len(df_filtrado)}", fig
+
+@callback(
+    Output("grafico-anio-artista", "figure"),
+    Input("dropdown-anio", "value")
+)
+def actualizar_grafico_estreno(anio):
+    if not anio:
+        fig = px.bar(title="Selecciona un año para ver el gráfico", template="plotly_white")
+        fig.update_layout(xaxis={'visible': False}, yaxis={'visible': False})
+        return fig
+
+    df_filtrado = df_estreno_agg[df_estreno_agg["ESTRENO"] == anio]
+
+    fig = px.bar(
+        df_filtrado,
+        x="NOMBRE_ARTISTA",
+        y="TOTAL",
+        title=f"📚 Cantidad de mangas por artista en {anio}",
+        template="plotly_white",
+        color="TOTAL",
+        color_continuous_scale="Blues"
+    )
+
+    fig.update_layout(
+        xaxis_title="Artista",
+        yaxis_title="Total de mangas",
+        xaxis_tickangle=-45
+    )
+
+    return fig

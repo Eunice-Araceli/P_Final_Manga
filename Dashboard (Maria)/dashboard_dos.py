@@ -4,13 +4,12 @@ import pandas as pd
 from sqlalchemy import create_engine
 import plotly.express as px
 
-#CONEXION DE SQL
+# CONEXION DE SQL
 import Constantes_BD as c
 
 # CONEXION AL SQL
 cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
 engine = create_engine(cadena_con)
-
 
 # CONSULTA DE DATOS
 df_manga = pd.read_sql("SELECT * FROM mangas", con=engine)
@@ -27,11 +26,20 @@ df_tema = pd.read_sql("""
     GROUP BY t.NOMBRE
 """, con=engine)
 
+# NUEVA CONSULTA: Genero vs Status
+df_genero_status = pd.read_sql("""
+    SELECT g.NOMBRE AS GENERO, m.STATUS, COUNT(*) AS TOTAL
+    FROM mangas m
+    JOIN manga_genero mg ON m.ID_MANGA = mg.ID_MANGA
+    JOIN generos g ON mg.ID_GENERO = g.ID_GENERO
+    WHERE m.STATUS IS NOT NULL
+    GROUP BY g.NOMBRE, m.STATUS
+""", con=engine)
+
 # METRICAS NUEVAS
 mangas_publicados = df_manga[df_manga['ESTRENO'].notnull()].shape[0]
 mangas_finalizados = df_manga[df_manga['STATUS'].str.contains("Finished", na=False)].shape[0]
 mangas_en_emision = df_manga[df_manga['STATUS'].str.contains("Publishing", na=False)].shape[0]
-
 
 # CÍRCULOS INFORMATIVOS
 def circle_card(title, value, color):
@@ -62,11 +70,10 @@ def get_dashboard():
         y="GENERO",
         orientation="h",
         title="Frecuencia por género",
-        template="plotly_white",
+        template="plotly_dark",
         color="TOTAL",
         color_continuous_scale="Blues"
     )
-    fig_genero.update_layout(paper_bgcolor="#e6ffc9", plot_bgcolor="#e6ffc9")
 
     # Gráfico de pastel (temas)
     pastel_colors = px.colors.sequential.Blues + px.colors.sequential.Purples
@@ -77,9 +84,8 @@ def get_dashboard():
         title="Distribución de temas",
         hole=0.3,
         template="plotly_white",
-        color_discrete_sequence=pastel_colors
+        color_discrete_sequence=px.colors.sequential.Blues
     )
-    fig_tema.update_layout(paper_bgcolor="#fbfcc9", plot_bgcolor="#fbfcc9")
 
     # Gráfico de dispersión (volúmenes vs lectores)
     fig_dispersion = px.scatter(
@@ -90,7 +96,20 @@ def get_dashboard():
         labels={"VOLUMENES": "Volúmenes", "LECTORES": "Lectores"},
         template="plotly_white"
     )
-    fig_dispersion.update_layout(paper_bgcolor="#ffddaf", plot_bgcolor="#ffddaf")
+    fig_dispersion.update_traces(marker=dict(color="#1f77b4"))
+
+    # Gráfico por género y estado
+    fig_genero_status = px.bar(
+        df_genero_status,
+        x="GENERO",
+        y="TOTAL",
+        color="STATUS",
+        barmode="stack",
+        title="Cantidad de mangas por género y publicación",
+        template="plotly_white",
+        color_discrete_sequence=px.colors.cmocean.dense
+    )
+    fig_genero_status.update_layout(xaxis_tickangle=-45)
 
     return dbc.Container([
         html.H2("📊 Estadísticas del contenido manga", className="text-center text-white fw-bold mb-4"),
@@ -118,5 +137,13 @@ def get_dashboard():
                 html.H5("📈 Relación entre volúmenes y lectores", className="fw-bold mb-2 text-white"),
                 dcc.Graph(figure=fig_dispersion)
             ])
+        ], className="mb-4"),
+
+        dbc.Row([
+            dbc.Col([
+                html.H5("📚 Cantidad de mangas por género y publicación", className="fw-bold mb-2 text-white"),
+                dcc.Graph(figure=fig_genero_status)
+            ])
         ])
+
     ], fluid=True, className="p-4 bg-info")
