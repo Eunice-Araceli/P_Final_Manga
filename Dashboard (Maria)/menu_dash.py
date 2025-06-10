@@ -33,7 +33,7 @@ sidebar = html.Div(
                 dbc.NavLink("📈 Dashboard 3", href="/dash3", active="exact"),
                 dbc.NavLink("👩🏻‍💻 Dashboard 4", href="/dash4", active="exact"),
                 dbc.NavLink("👨🏻‍💻 Documento final", href="https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0", active="exact", target="_blank"),
-                dbc.NavLink("💻 GitHub", href="https://github.com/", active="exact", target="_blank"),
+                dbc.NavLink("💻 GitHub", href="https://github.com/Eunice-Araceli/P_Final_Manga", active="exact", target="_blank"),
             ],
             vertical=True,
             pills=True,
