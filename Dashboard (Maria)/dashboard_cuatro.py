@@ -21,13 +21,14 @@ try:
     """, con=engine)
 
     df_estreno = pd.read_sql("""
-        SELECT A.NOMBRE AS NOMBRE_ARTISTA, YEAR(M.ESTRENO) AS ESTRENO
+        SELECT A.NOMBRE AS NOMBRE_ARTISTA, YEAR(M.ESTRENO) AS ESTRENO, M.LECTORES
         FROM MANGA_ARTISTA MA 
         JOIN MANGAS M ON M.ID_MANGA = MA.ID_MANGA
         JOIN ARTISTAS A ON MA.ID_ARTISTA = A.ID_ARTISTA
-        WHERE M.ESTRENO IS NOT NULL;
+        WHERE M.ESTRENO IS NOT NULL AND M.LECTORES IS NOT NULL;
     """, con=engine)
 
+#DATAS UTILIZADOS DATOS QUE ME JALEN
     df_estreno_agg = df_estreno.groupby(["NOMBRE_ARTISTA", "ESTRENO"]).size().reset_index(name="TOTAL")
     lista_anios = sorted(df_estreno_agg["ESTRENO"].unique())
 
@@ -105,23 +106,26 @@ def actualizar_todo(id_artista):
         names="GENERO",
         values="TOTAL",
         title=f"🐉 Generos relacionados con {nombre_artista}",
-        template="plotly_white"
+        template="plotly_white",
+        color_discrete_sequence=px.colors.sequential.Blues
     )
 
-    #GRAFICA DE BARRAS Y DATA FRAME
+#GRAFICA DE LINEAS
     df_estreno_filtrado = df_estreno[df_estreno["NOMBRE_ARTISTA"] == nombre_artista]
-    df_estreno_agg = df_estreno_filtrado.groupby("ESTRENO").size().reset_index(name="TOTAL")
-    fig_estreno = px.bar(
+    df_estreno_agg = df_estreno_filtrado.groupby("ESTRENO")["LECTORES"].sum().reset_index()
+    fig_estreno = px.line(
         df_estreno_agg,
         x="ESTRENO",
-        y="TOTAL",
-        title=f"⛩️ Mangas por año de estreno de {nombre_artista}",
-        template="plotly_white",
-        color="TOTAL",
-        color_continuous_scale="Blues"
+        y="LECTORES",
+        markers=True,
+        title=f"👁️ Vistas por año de estreno de {nombre_artista}",
+        template="plotly_white"
     )
+    fig_estreno.update_traces(line=dict(color="blue", width=3), marker=dict(size=8, color="darkblue"))
+    fig_estreno.update_layout(xaxis_title="Año", yaxis_title="Vistas")
 
-    #GRAFICA DE MEJOR RANKING
+
+    #GRAFICA DE MEJOR RANKING POR EL NOMBRE DEL ARTISTA
     df_rank = df_mejor_rank[df_mejor_rank["NOMBRE_ARTISTA"] == nombre_artista]
     fig_rank = px.bar(
         df_rank,
