@@ -7,7 +7,7 @@ from dash import html, dcc, Input, Output, callback
 # CONEXIÓN A LA BD
 engine = create_engine("mysql+mysqlconnector://root:123456@localhost/manga")
 
-# CONSULTA SQL ACTUALIZADA
+#CONSULTAS DE LA BASE DE DATOS SQL
 df_rangos = pd.read_sql("""
     SELECT 
         d.NOMBRE AS DEMOGRAFIA,
@@ -29,20 +29,20 @@ df_rangos = pd.read_sql("""
 
 demografias = df_rangos["DEMOGRAFIA"].unique()
 
-# LAYOUT
+#GRAFICOS
 def layout_editorial_por_rango_multiples():
     return dbc.Container([
-        html.H1("Editoriales por Rango de Manga", className="text-center text-white bg-primary p-3 mb-4 rounded"),
-        html.P("Explora qué editoriales tienen mejor desempeño en rankings de mangas, separadas por rango.",
+        html.H1(" 📊 Editoriales por rango de manga", className="text-center text-white bg-primary p-3 mb-4 rounded"),
+        html.P(" 👨🏻‍💻 Descubre que editoriales son mejor en rankings de mangas separadas por rango",
                className="lead text-center mb-4 text-white"),
 
         dbc.Row([
             dbc.Col([
-                html.Label("Selecciona una demografía:", className="fw-bold text-white"),
+                html.Label("📍 Selecciona una demografia:", className="fw-bold text-white"),
                 dcc.Dropdown(
                     options=[{"label": d, "value": d} for d in demografias],
                     id="filtro_demografia_rango_multiple",
-                    value=demografias[0],
+                    value="SEINEN" if "SEINEN" in demografias else demografias[0],
                     clearable=False
                 )
             ], width=6)
@@ -50,28 +50,25 @@ def layout_editorial_por_rango_multiples():
 
         dbc.Row([
             dbc.Col(dbc.Card([
-                dbc.CardHeader("Top Editoriales - Rango 1–5", className="bg-primary text-white"),
+                dbc.CardHeader("📍 Top editoriales  Rango 1–5", className="bg-primary text-white"),
                 dbc.CardBody(dcc.Graph(id="grafica_rango_1_5"))
             ], className="mb-4 shadow"), width=12),
 
             dbc.Col(dbc.Card([
-                dbc.CardHeader("Top Editoriales - Rango 6–10", className="bg-info text-white"),
+                dbc.CardHeader("📍 Top editoriales  Rango 6–10", className="bg-info text-white"),
                 dbc.CardBody(dcc.Graph(id="grafica_rango_6_10"))
             ], className="mb-4 shadow"), width=12),
 
             dbc.Col(dbc.Card([
-                dbc.CardHeader("Top Editoriales - Rango 11+", className="bg-secondary text-white"),
+                dbc.CardHeader("📍 Top editoriales  Rango 11+", className="bg-secondary text-white"),
                 dbc.CardBody(dcc.Graph(id="grafica_rango_11_mas"))
             ], className="mb-4 shadow"), width=12)
         ]),
 
-        html.Footer([
-            html.Hr(),
-            html.P("© 2025 Dashboard Manga • Todos los derechos reservados", className="text-center text-light")
-        ])
+
     ], fluid=True, style={"backgroundColor": "#001f3f", "padding": "40px"})
 
-# CALLBACK
+
 @callback(
     Output("grafica_rango_1_5", "figure"),
     Output("grafica_rango_6_10", "figure"),

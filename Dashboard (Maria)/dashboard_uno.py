@@ -33,7 +33,7 @@ df_demografias = pd.read_sql("""
     GROUP BY d.NOMBRE
 """, con=engine)
 
-# Tarjetas circulares
+#LAS TARJETITAS CIRCULARES
 def circular_card(title, value, color):
     return html.Div([
         html.H6(title, className="fw-bold mb-2"),
@@ -41,7 +41,7 @@ def circular_card(title, value, color):
     ], style={
         "background": color,
         "color": "white",
-        "borderRadius": "50%",
+        "borderRadius": "80%",
         "width": "160px",
         "height": "160px",
         "display": "flex",
@@ -49,18 +49,17 @@ def circular_card(title, value, color):
         "alignItems": "center",
         "justifyContent": "center",
         "textAlign": "center",
-        "boxShadow": "0 0 10px rgba(0,0,0,0.4)",
         "margin": "0 auto"
     })
 
-# Layout principal
+#EN ESTA PARTE SE PONE QUE TIPO DE GRAFICOS ES EL QUE QUIERES Y LAS X Y Y
 def layout_dashboard_japon():
-    # ✅ Gráfico de demografías con fondo blanco
+    #GRAFICOS DE LA DEMOGRFIA CON GRAFICO EN BLANCO
     fig_demografias = px.bar(
         df_demografias.sort_values("TOTAL", ascending=False),
         x="DEMOGRAFIA",
         y="TOTAL",
-        title="Popularidad de Demografías Japonesas",
+        title="Popularidad de demografias Japonesas 🐉",
         template="plotly_white",
         color="TOTAL",
         color_continuous_scale="ice"
@@ -73,7 +72,7 @@ def layout_dashboard_japon():
         yaxis=dict(color="black")
     )
 
-    # ✅ Gráfico de géneros con tema oscuro y escala azul-gris suave
+    # GRAFICOS DE GENERO CON EL FONDO OSCURO
     fig_genero = px.bar(
         df_genero.sort_values("TOTAL", ascending=True).tail(15),
         x="TOTAL",
@@ -92,7 +91,7 @@ def layout_dashboard_japon():
         yaxis=dict(color="white")
     )
 
-    # ✅ Gráfico de temas en oscuro con azul-gris
+#GRAFICO DE TEMAS CON TEMA OBSUCURO
     fig_tema = px.pie(
         df_tema.sort_values("TOTAL", ascending=False).head(10),
         values="TOTAL",
@@ -108,7 +107,7 @@ def layout_dashboard_japon():
     )
 
     return dbc.Container([
-        html.H3("📊 Dashboard Global de Manga", className="text-center fw-bold mb-4 text-white"),
+        html.H3("📊 Dashboard global de manga 🌎", className="text-center fw-bold mb-4 text-white"),
 
         dbc.Row([
             dbc.Col(circular_card("📚 Mangas", f"{len(df_manga):,}", "#3399cc"), md=4),
