@@ -8,7 +8,7 @@ import Constantes_BD as c
 cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
 engine = create_engine(cadena_con)
 
-# CONSULTAS
+# CONSULTAS DE SQL
 try:
     df_artistas = pd.read_sql("SELECT ID_ARTISTA, NOMBRE FROM artistas", con=engine)
     df_generos = pd.read_sql("""
@@ -48,28 +48,16 @@ except Exception as e:
     lista_anios = []
     df_mejor_rank = pd.DataFrame(columns=["NOMBRE_ARTISTA", "MEJOR_RANK"])
 
-# LAYOUT
-
+#GRAFICA DE RELACION DE ARTISTAS CON GENERO
 def get_layout():
-    fig_mejor_rank = px.bar(
-        df_mejor_rank.sort_values("MEJOR_RANK"),
-        x="MEJOR_RANK",
-        y="NOMBRE_ARTISTA",
-        orientation="h",
-        title="\U0001f3c6 Mejor posición en el ranking por artista",
-        template="plotly_white",
-        color="MEJOR_RANK",
-        color_continuous_scale="Blues"
-    )
-
     return html.Div([
-        html.H1("Relación de Artista con Géneros", style={"textAlign": "center", "color": "#333", "marginBottom": "20px"}),
+        html.H1("💻 Relacion de artista con generos 📌", style={"textAlign": "center", "color": "#333", "marginBottom": "20px"}),
 
         html.Div([
             dcc.Dropdown(
                 id="dd-artista",
                 options=[{"label": row["NOMBRE"], "value": row["ID_ARTISTA"]} for _, row in df_artistas.iterrows()],
-                placeholder="Selecciona un artista",
+                placeholder=" 📌 Selecciona un artista 📌",
                 style={"width": "300px", "margin": "0 auto"}
             )
         ], style={"textAlign": "center", "marginBottom": "30px"}),
@@ -82,83 +70,75 @@ def get_layout():
 
         dcc.Graph(id="grafica-artista"),
 
-        html.H2("📈 Mangas por Artista y Año de Estreno", className="text-center text-primary mt-5 mb-3"),
-
-        html.Div([
-            dcc.Dropdown(
-                id="dropdown-anio",
-                options=[{"label": str(a), "value": a} for a in lista_anios],
-                placeholder="Selecciona un año para filtrar (opcional)",
-                style={"width": "300px", "margin": "0 auto", "marginBottom": "20px"}
-            )
-        ], style={"textAlign": "center"}),
-
+        html.H2("📈 Mangas por artista y año de estreno 📈", className="text-center text-primary mt-5 mb-3"),
         dcc.Graph(id="grafico-anio-artista"),
 
-        html.H2("\U0001f4ca Mejor Ranking por Artista", className="text-center text-primary mt-5 mb-3"),
-        dcc.Graph(figure=fig_mejor_rank)
+        html.H2("🌟 mejor ranking por artista 🌟", className="text-center text-primary mt-5 mb-3"),
+        dcc.Graph(id="grafico-rank-artista")
 
     ], style={"backgroundColor": "#eaf6ff", "padding": "40px"})
 
-# CALLBACKS
+
 @callback(
     Output("info-artista", "children"),
     Output("grafica-artista", "figure"),
+    Output("grafico-anio-artista", "figure"),
+    Output("grafico-rank-artista", "figure"),
     Input("dd-artista", "value")
 )
-def actualizar_artista(id_artista):
-    if id_artista is None or df_generos.empty:
-        fig = px.pie(title="Selecciona un artista", template="plotly_white")
-        return "Selecciona un artista para ver la información.", fig
+def actualizar_todo(id_artista):
+    if id_artista is None:
+        fig_blank = px.bar(title="Selecciona un artista", template="plotly_white")
+        fig_blank.update_layout(xaxis={'visible': False}, yaxis={'visible': False})
+        return "🐉 Selecciona un artista para ver su informacion ⛩️", fig_blank, fig_blank, fig_blank
 
+    #DATA FRAMES
     artista_info = df_artistas[df_artistas["ID_ARTISTA"] == id_artista]
     nombre_artista = artista_info.iloc[0]["NOMBRE"]
 
-    df_filtrado = df_generos[df_generos["ID_ARTISTA"] == id_artista]
 
-    if df_filtrado.empty:
-        fig = px.pie(title="No hay géneros para este artista", template="plotly_white")
-        return f"Artista seleccionado: {nombre_artista} | No hay géneros relacionados.", fig
-
-    conteo_generos = df_filtrado["GENERO"].value_counts().reset_index()
+    df_gen = df_generos[df_generos["ID_ARTISTA"] == id_artista]
+    conteo_generos = df_gen["GENERO"].value_counts().reset_index()
     conteo_generos.columns = ["GENERO", "TOTAL"]
-
-    fig = px.pie(
+    fig_pie = px.pie(
         conteo_generos,
         names="GENERO",
         values="TOTAL",
-        title=f"Géneros relacionados con {nombre_artista}",
+        title=f"🐉 Generos relacionados con {nombre_artista}",
         template="plotly_white"
     )
 
-    return f"Artista seleccionado: {nombre_artista} | Total de géneros: {len(df_filtrado)}", fig
-
-@callback(
-    Output("grafico-anio-artista", "figure"),
-    Input("dropdown-anio", "value")
-)
-def actualizar_grafico_estreno(anio):
-    if not anio:
-        fig = px.bar(title="Selecciona un año para ver el gráfico", template="plotly_white")
-        fig.update_layout(xaxis={'visible': False}, yaxis={'visible': False})
-        return fig
-
-    df_filtrado = df_estreno_agg[df_estreno_agg["ESTRENO"] == anio]
-
-    fig = px.bar(
-        df_filtrado,
-        x="NOMBRE_ARTISTA",
+    #GRAFICA DE BARRAS Y DATA FRAME
+    df_estreno_filtrado = df_estreno[df_estreno["NOMBRE_ARTISTA"] == nombre_artista]
+    df_estreno_agg = df_estreno_filtrado.groupby("ESTRENO").size().reset_index(name="TOTAL")
+    fig_estreno = px.bar(
+        df_estreno_agg,
+        x="ESTRENO",
         y="TOTAL",
-        title=f"📚 Cantidad de mangas por artista en {anio}",
+        title=f"⛩️ Mangas por año de estreno de {nombre_artista}",
         template="plotly_white",
         color="TOTAL",
         color_continuous_scale="Blues"
     )
 
-    fig.update_layout(
-        xaxis_title="Artista",
-        yaxis_title="Total de mangas",
-        xaxis_tickangle=-45
+    #GRAFICA DE MEJOR RANKING
+    df_rank = df_mejor_rank[df_mejor_rank["NOMBRE_ARTISTA"] == nombre_artista]
+    fig_rank = px.bar(
+        df_rank,
+        x="MEJOR_RANK",
+        y="NOMBRE_ARTISTA",
+        orientation="h",
+        title="🥇 Mejor ranking del artista 🥇",
+        template="plotly_white",
+        color="MEJOR_RANK",
+        color_continuous_scale="Blues"
     )
 
-    return fig
+    return (
+        f"⛩️ Artista seleccionado: {nombre_artista} 📚 Total de generos: {len(df_gen)}",
+        fig_pie,
+        fig_estreno,
+        fig_rank
+    )
+
+
