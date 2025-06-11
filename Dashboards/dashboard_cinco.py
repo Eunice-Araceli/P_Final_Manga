@@ -3,9 +3,11 @@ import pandas as pd
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash import html, dcc, Input, Output, callback
+from BD import Constantes_BD as c
 
 # CONEXIÓN A LA BD
-engine = create_engine("mysql+mysqlconnector://root:123456@localhost/manga")
+cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
+engine = create_engine(cadena_con)
 
 #CONSULTAS DE LA BASE DE DATOS SQL
 df_rangos = pd.read_sql("""

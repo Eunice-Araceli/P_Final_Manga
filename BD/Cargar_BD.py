@@ -25,5 +25,5 @@ def insertar():
             df_2_Dem.to_sql("manga_demografia", con=conexion, if_exists="append", index=False)
     except:
         print("""---------------------------------
-            La base de datos ya existe
-            ---------------------------------""")
+Error Selecciona otra opcion
+---------------------------------""")

@@ -9,8 +9,8 @@ def Crear_Schema():
             conexion.execute(text("CREATE SCHEMA  `MANGA`;"))
      except:
          print("""---------------------------------
-    La base de datos ya existe
-    ---------------------------------""")
+Error Selecciona otra opcion
+---------------------------------""")
 
 def Crear_Tablas():
     try:

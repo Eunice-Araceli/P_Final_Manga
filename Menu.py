@@ -72,7 +72,7 @@ def menu():
         elif opc==2:
             submenu_bd()
         elif opc==3:
-            print("opc3")
+
         elif opc==4:
             seleccion = False
         else:

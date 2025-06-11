@@ -3,8 +3,8 @@ from dash import Dash, html
 def lista():
     return html.Ul([
         html.Li(html.A("Información Adicional del proyecto", href="https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0#heading=h.fjio3jaax9my", target="_blank")),
-        html.Li(html.A("mangazenkan", href="https://www.mangazenkan.com/ranking/products/?mode=monthly&type=comic", target="_blank")),
-        html.Li(html.A("mangazenkan-2", href="https://www.mangazenkan.com/r/rekidai/total/?srsltid=AfmBOoo74zKqIrpmoGSOdfecYuZAZTvVMG3yoEL4uVR_YyfnT2hbbxqC", target="_blank"))
+        html.Li(html.A("Top Manga", href="https://myanimelist.net/topmanga.php", target="_blank")),
+        html.Li(html.A("Mangazenkan", href="https://www.mangazenkan.com/r/rekidai/total/?srsltid=AfmBOoo74zKqIrpmoGSOdfecYuZAZTvVMG3yoEL4uVR_YyfnT2hbbxqC", target="_blank"))
     ], style={"color": "#333", "fontSize": "18px", "paddingLeft": "20px"})
 
 cuadro_style = {
@@ -57,15 +57,15 @@ def welcome():
             ),
             html.Div([
                 html.Img(src=url, style=img_style) for url in [
-                    "https://redbookediciones.com/wp-content/uploads/2020/11/978-84-122311-5-1-410x528.jpg",
-                    "https://m.media-amazon.com/images/I/91AOnFyU6cL._AC_UF1000,1000_QL80_.jpg",
-                    "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781647229146/a-history-of-modern-manga-9781647229146_lg.jpg",
-                    "https://m.media-amazon.com/images/I/91jahq5PI2L._AC_UF894,1000_QL80_.jpg",
-                    "https://i.ebayimg.com/images/g/9koAAOSwSXtnSdH4/s-l400.jpg",
-                    "https://i.ebayimg.com/images/g/t-cAAOSwYTllaGIG/s-l400.jpg",
-                    "https://images.cdn3.buscalibre.com/fit-in/360x360/a7/f8/a7f8de0c0ea08ed476c2a9f906285899.jpg",
-                    "https://imagenesal.bros.me/9788491456803.jpg",
-                    "https://m.media-amazon.com/images/I/712cKmJuchL._AC_UF894,1000_QL80_.jpg"
+                    "https://i.pinimg.com/736x/ff/d6/17/ffd61770cd671e42b4431b72b79eebd1.jpg",
+                    "https://i.pinimg.com/736x/84/7a/5d/847a5d5d14ff7ab649b61c87a2939cdb.jpg",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
                 ]
             ], style={
                 "display": "flex",

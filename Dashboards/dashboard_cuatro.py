@@ -2,7 +2,7 @@ from dash import html, dcc, dash_table, Input, Output, callback
 import pandas as pd
 import plotly.express as px
 from sqlalchemy import create_engine
-import Constantes_BD as c
+from BD import Constantes_BD as c
 
 # CONEXIÓN A BD
 cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
