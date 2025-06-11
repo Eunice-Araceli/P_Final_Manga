@@ -41,6 +41,6 @@ def web():
             else:
                 rank_manga["Calificacion"].append(c.span.text)
     df = pd.DataFrame(rank_manga)
-    df.to_csv('DataSet/rank_manga.csv', sep=";")
+    df.to_csv('../DataSet/rank_manga2.csv', sep=";")
     time.sleep(3)
     navegador.close()

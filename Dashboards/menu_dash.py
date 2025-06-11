@@ -5,10 +5,8 @@ from Dashboards import dashboard_dos as ds
 from Dashboards import dashboard_uno as du
 from Dashboards import dashboard_cuatro as d4
 import dash
-import dash_bootstrap_components as dbc
 from dash import dcc, html
 from Dashboards import dashboard_cinco as dc
-
 
 def menu_d():
     #app es para darle un estilo a la pagina
@@ -31,7 +29,7 @@ def menu_d():
                     dbc.NavLink("📝 Dashboard 2", href="/dash2", active="exact"),
                     dbc.NavLink("📈 Dashboard 3", href="/dash3", active="exact"),
                     dbc.NavLink("👩🏻‍💻 Dashboard 4", href="/dash4", active="exact"),
-                    dbc.NavLink("👨🏻‍💻 Documento final", href="https://docs.google.com/document/d/1wCumUV3Mli_3TdIWVds-bghRgEb797WD0_NLUA_fd4E/edit?tab=t.0", active="exact", target="_blank"),
+                    dbc.NavLink("👨🏻‍💻 Documento final", href="https://docs.google.com/document/d/12msCx5EiAoDgmdkS1hljF4QwpBaENIbysiz1Srbjs4Q/edit?usp=sharing", active="exact", target="_blank"),
                     dbc.NavLink("💻 GitHub", href="https://github.com/Eunice-Araceli/P_Final_Manga", active="exact", target="_blank"),
                 ],
                 vertical=True,
@@ -71,9 +69,6 @@ def menu_d():
             ],
             className="p-3 bg-light rounded-3",
         )
-    return sidebar,content
-
-sidebar, content = menu_d()
-app = dash.Dash(external_stylesheets=[dbc.themes.SOLAR], suppress_callback_exceptions=True)
-app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
-app.run(debug=True)
+    app = dash.Dash(external_stylesheets=[dbc.themes.SOLAR], suppress_callback_exceptions=True)
+    app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
+    app.run(debug=True)

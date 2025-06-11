@@ -5,11 +5,12 @@ from BD import Crear_BD as cbd
 from BD import Cargar_BD as carbd
 
 
+
 def opciones():
     print("""Menu:
 1: WebScrapping
 2: Base de Datos
-3: Dashboard 
+3: Dashboard **Seleccionar Dos Veces**
 4: Salir 
     """)
     opc=int(input("Ingresa la opcion: "))
@@ -49,8 +50,8 @@ def submenu_webscrapping():
             print("Opcion invalida")
 
 def submenu_bd():
-    seguir = True
-    while seguir == True:
+    s = True
+    while s == True:
         sub_opc = opciones_submenu_bd()
         if sub_opc == 1:
             cbd.Crear_Schema()
@@ -59,7 +60,7 @@ def submenu_bd():
         elif sub_opc == 3:
             carbd.insertar()
         elif sub_opc == 4:
-            seguir = False
+            s = False
         else:
             print("Opcion invalida")
 
@@ -72,11 +73,14 @@ def menu():
         elif opc==2:
             submenu_bd()
         elif opc==3:
-
-        elif opc==4:
-            seleccion = False
+            import menu_dash
+            menu_dash.menu_d()
+            break
+        elif opc == 4:
+            break
         else:
             print("Opcion invalida")
+
 
 if __name__ == "__main__":
     menu()

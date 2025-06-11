@@ -1,7 +1,7 @@
 import pandas as pd
 
 def leer_csv():
-    df=pd.read_csv("DataSet/data_manga.csv",sep=";")
+    df=pd.read_csv("../DataSet/data_manga.csv",sep=";")
     return df
 
 def separar_listas(df:pd.DataFrame,colum):
@@ -97,7 +97,7 @@ def transformar_datos_simples(df:pd.DataFrame):
     return df
 
 def transformar_df_rank():
-    df = pd.read_csv("DataSet/rank_manga.csv", sep=";")
+    df = pd.read_csv("../DataSet/rank_manga.csv", sep=";")
     df.Rank = pd.to_numeric(df.Rank, errors="coerce")
     df.Titulo = df.Titulo.str.strip().str.upper()
     df.Calificacion = pd.to_numeric(df.Calificacion, errors="coerce")

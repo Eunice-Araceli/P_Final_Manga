@@ -16,7 +16,7 @@ def Crear_Tablas():
     try:
         cadena_con = f"mysql+mysqlconnector://{c.USER}:{c.PASSWORD}@{c.HOST}/{c.DATABASE}"
         engine = create_engine(cadena_con)
-        with open("DataSet/BD_MANGA.sql", "r", encoding="utf-8") as archivo:
+        with open("../DataSet/BD_MANGA.sql", "r", encoding="utf-8") as archivo:
             query = archivo.read()
         sentencias = query.split(";")
         with engine.connect() as conexion:

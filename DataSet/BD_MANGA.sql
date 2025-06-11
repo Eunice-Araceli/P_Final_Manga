@@ -269,7 +269,8 @@ CREATE TABLE `mangas` (
   CONSTRAINT `ID_RANK` FOREIGN KEY (`ID_RANK`) REFERENCES `ranks` (`ID_RANK`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+ALTER TABLE mangas DROP FOREIGN KEY ID_RANK;
+ALTER TABLE mangas DROP ID_RANK;
 --
 -- Dumping data for table `mangas`
 --

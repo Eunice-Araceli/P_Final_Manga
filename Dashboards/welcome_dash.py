@@ -51,21 +51,21 @@ def welcome():
         ], style=cuadro_style),
 
         html.Div([
-            html.Center(html.H2("Introducción", style={"color": "#003366"})),
+            html.Center(html.H2("Descripción del problema", style={"color": "#003366"})),
             html.P(
-                "En este proyecto lo que realizamos es la extracción de datos de varias páginas de manga utilizando Python y varias bibliotecas como pandas, Beautiful Soup, etc. con el propósito de crear un archivo CSV con información relevante. Se realiza limpieza de datos para eliminar valores nulos, espacios innecesarios y errores de formato."
+                "Gran número de mangas estrenados sin un previo análisis de mercado, lo que conlleva a varios en estado de Hiatus (Pausa indefinida), lo cual desencadena en editoriales con pérdidas monetarias por sus proyectos sin finalizar, generando repercusiones tanto monetarias como reputacionales."
             ),
             html.Div([
                 html.Img(src=url, style=img_style) for url in [
                     "https://i.pinimg.com/736x/ff/d6/17/ffd61770cd671e42b4431b72b79eebd1.jpg",
                     "https://i.pinimg.com/736x/84/7a/5d/847a5d5d14ff7ab649b61c87a2939cdb.jpg",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
+                    "https://i.pinimg.com/736x/27/1a/b1/271ab14dbe8d65dc0b9d8888fc508a0f.jpg",
+                    "https://i.pinimg.com/736x/e2/8c/12/e28c12d755fba575d11259b360ce9abd.jpg",
+                    "https://i.pinimg.com/736x/fc/ca/95/fcca952c3fdfe05d16525315be99812c.jpg",
+                    "https://i.pinimg.com/736x/72/15/2d/72152daeb4da1881068028c901ff3baf.jpg",
+                    "https://i.pinimg.com/736x/93/7d/a0/937da03f79c7c1d33510522e7d3e24ba.jpg",
+                    "https://i.pinimg.com/736x/77/f7/37/77f737027145dd755530f78a4fe276c1.jpg",
+                    "https://i.pinimg.com/736x/a0/52/20/a05220170083fcbd50f49511edf6bc82.jpg"
                 ]
             ], style={
                 "display": "flex",
@@ -76,15 +76,15 @@ def welcome():
 
         html.Div([
             html.Center(html.H2("Objetivo General", style={"color": "#003366"})),
-            html.P("Desarrollar un sistema para extraer, limpiar y analizar datos de páginas web de manga y generar visualizaciones significativas para la toma de decisiones.")
+            html.P("Desarrollar un sistema que extraiga los datos de una página web, en el cual después llevará un proceso de limpiar y procesar los datos con el fin de que sea más fácil su interpretación, con la finalidad de poder analizar los datos que obtengamos para generar estadísticas y posteriormente visualizaciones.")
         ], style=cuadro_style),
 
         html.Div([
             html.Center(html.H2("Objetivos Específicos", style={"color": "#003366"})),
             html.Ul([
-                html.Li("Utilizar herramientas como BeautifulSoup, Scrapy o Selenium."),
                 html.Li("Verificar la calidad y confiabilidad de los datos."),
-                html.Li("Documentar todo el proyecto de manera clara y ordenada.")
+                html.Li("Documentar todo el proyecto de manera clara y ordenada."),
+                html.Li("Elaborar dashboards reales y funcionales.")
             ], style={"fontSize": "18px", "paddingLeft": "20px"})
         ], style=cuadro_style),
 
